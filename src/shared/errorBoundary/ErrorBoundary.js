@@ -1,18 +1,16 @@
 import { Component } from "react";
-import CharList from "../../components/charList/CharList";
 import Alert from "@mui/material/Alert";
+
 class ErrorBoundary extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       error: false,
     };
   }
 
   static getDerivedStateFromError(error) {
-    if (error) {
-      return { error: true };
-    }
+    return { error: true };
   }
 
   componentDidCatch(error) {
@@ -28,7 +26,7 @@ class ErrorBoundary extends Component {
         </Alert>
       );
     } else {
-      return <CharList />;
+      return this.props.children;
     }
   }
 }

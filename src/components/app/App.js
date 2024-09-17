@@ -2,28 +2,39 @@ import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
-import { Provider } from "react-redux";
 import decoration from "../../resources/img/vision.png";
-import store from "../../store/store";
 import ErrorBoundary from "../../shared/errorBoundary/ErrorBoundary";
+import LoginButton from "../login/Login";
+import LogoutButton from "../logout/Logout";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect } from "react";
 
 const App = () => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
   return (
-    <Provider store={store}>
-      <div className="app">
+    <div className="app">
+      <LoginButton />
+      <LogoutButton />
+      <ErrorBoundary>
         <AppHeader />
-        <main>
+      </ErrorBoundary>
+      <main>
+        <ErrorBoundary>
           <RandomChar />
-          <div className="char__content">
-            <ErrorBoundary>
-              <CharList />
-            </ErrorBoundary>
+        </ErrorBoundary>
+        <div className="char__content">
+          <ErrorBoundary ui={CharList}>
+            <CharList />
+          </ErrorBoundary>
+
+          <ErrorBoundary>
             <CharInfo />
-          </div>
-          <img className="bg-decoration" src={decoration} alt="vision" />
-        </main>
-      </div>
-    </Provider>
+          </ErrorBoundary>
+        </div>
+        <img className="bg-decoration" src={decoration} alt="vision" />
+      </main>
+    </div>
   );
 };
 

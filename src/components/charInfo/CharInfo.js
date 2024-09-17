@@ -1,61 +1,82 @@
-import './charInfo.scss';
-import thor from '../../resources/img/thor.jpeg';
+import "./charInfo.scss";
+import { useSelector } from "react-redux";
+import Description from "../../shared/Description/Description";
+import { loadComics } from "../randomChar/RandomCharSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Alert, Skeleton } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const CharInfo = () => {
-    return (
-        <div className="char__info">
-            <div className="char__basics">
-                <img src={thor} alt="abyss"/>
-                <div>
-                    <div className="char__info-name">thor</div>
-                    <div className="char__btns">
-                        <a href="#" className="button button__main">
-                            <div className="inner">homepage</div>
-                        </a>
-                        <a href="#" className="button button__secondary">
-                            <div className="inner">Wiki</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div className="char__descr">
-                In Norse mythology, Loki is a god or jötunn (or both). Loki is the son of Fárbauti and Laufey, and the brother of Helblindi and Býleistr. By the jötunn Angrboða, Loki is the father of Hel, the wolf Fenrir, and the world serpent Jörmungandr. By Sigyn, Loki is the father of Nari and/or Narfi and with the stallion Svaðilfari as the father, Loki gave birth—in the form of a mare—to the eight-legged horse Sleipnir. In addition, Loki is referred to as the father of Váli in the Prose Edda.
-            </div>
-            <div className="char__comics">Comics:</div>
-            <ul className="char__comics-list">
-                <li className="char__comics-item">
-                    All-Winners Squad: Band of Heroes (2011) #3
-                </li>
-                <li className="char__comics-item">
-                    Alpha Flight (1983) #50
-                </li>
-                <li className="char__comics-item">
-                    Amazing Spider-Man (1999) #503
-                </li>
-                <li className="char__comics-item">
-                    Amazing Spider-Man (1999) #504
-                </li>
-                <li className="char__comics-item">
-                    AMAZING SPIDER-MAN VOL. 7: BOOK OF EZEKIEL TPB (Trade Paperback)
-                </li>
-                <li className="char__comics-item">
-                    Amazing-Spider-Man: Worldwide Vol. 8 (Trade Paperback)
-                </li>
-                <li className="char__comics-item">
-                    Asgardians Of The Galaxy Vol. 2: War Of The Realms (Trade Paperback)
-                </li>
-                <li className="char__comics-item">
-                    Vengeance (2011) #4
-                </li>
-                <li className="char__comics-item">
-                    Avengers (1963) #1
-                </li>
-                <li className="char__comics-item">
-                    Avengers (1996) #1
-                </li>
-            </ul>
+  const dispatch = useDispatch();
+
+  console.log("render");
+
+  const { name, description, thumbnail, id } = useSelector(
+    (state) => state.randomChar.activeChar
+  );
+  const { comics, loading, error } = useSelector((state) => state.randomChar);
+  const { path, extension } = thumbnail;
+
+  useEffect(() => {
+    if (id) {
+      dispatch(loadComics(id));
+    }
+  }, [id]);
+
+  return (
+    <div className="char__info">
+      <div className="char__basics">
+        <img src={`${path}.${extension}`} alt="abyss" />
+        <div>
+          <div className="char__info-name">{name}</div>
+          <div className="char__btns">
+            <a href="#" className="button button__main">
+              <div className="inner">homepage</div>
+            </a>
+            <a href="#" className="button button__secondary">
+              <div className="inner">Wiki</div>
+            </a>
+          </div>
         </div>
-    )
-}
+      </div>
+      <Description text={description} />
+      <div className="char__comics">Comics:</div>
+      {error && <Alert severity="error">Couldn't load comics...</Alert>}
+      {loading ? (
+        <ul className="char__fake-list">
+          {Array(10)
+            .fill()
+            .map((_, i) => (
+              <Skeleton
+                key={i}
+                sx={{ margin: "10px 0" }}
+                variant="rectangular"
+                width={375}
+                height={25}
+              />
+            ))}
+        </ul>
+      ) : (
+        <ul className="char__comics-list">
+          {comics.length > 0 ? (
+            comics.map((item) => {
+              const { id, title } = item;
+              return (
+                <Link to={`/comicsinfo/${id}`}>
+                  <li key={id} className="char__comics-item">
+                    {title}
+                  </li>
+                </Link>
+              );
+            })
+          ) : (
+            <p>No comics was found</p>
+          )}
+        </ul>
+      )}
+    </div>
+  );
+};
 
 export default CharInfo;

@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadChars, loadChars } from "./CharListSlice";
 import Alert from "@mui/material/Alert";
 import { Skeleton } from "@mui/material";
+import { selectChar } from "../randomChar/RandomCharSlice";
+
 const CharList = () => {
   const dispatch = useDispatch();
 
@@ -25,7 +27,7 @@ const CharList = () => {
 
   // Handle uploading more characters
   const handleUploadChars = () => {
-    dispatch(uploadChars());
+    dispatch(uploadChars(offset));
   };
 
   const charsUploaded = chars.length > 9;
@@ -47,7 +49,11 @@ const CharList = () => {
           {chars.map((item) => {
             const { name, id, thumbnail } = item;
             return (
-              <li key={id} className="char__item">
+              <li
+                onClick={() => dispatch(selectChar(item))}
+                key={id}
+                className="char__item"
+              >
                 <img
                   src={`${thumbnail?.path}.${thumbnail?.extension}`}
                   alt={name}

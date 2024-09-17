@@ -17,6 +17,16 @@ class MarvelService {
       `https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset}&apikey=${KEY}`
     );
   };
+
+  static getComics = (id) => {
+    return this.getResource(
+      `${BASE_API}/comics?characters=${id}id&apikey=${KEY}`
+    );
+  };
+
+  static getComicsItemInfo = (id) => {
+    return this.getResource(`${BASE_API}/comics/${id}?apikey=${KEY}`);
+  };
 }
 
 export default MarvelService;

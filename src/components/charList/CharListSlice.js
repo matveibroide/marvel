@@ -30,7 +30,7 @@ export const uploadChars = createAsyncThunk(
 const initialState = {
   chars: [],
   loading: false,
-  offset: 9,
+  offset: 18,
   btnLoad: false,
   error: null,
 };
