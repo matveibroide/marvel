@@ -6,16 +6,31 @@ import decoration from "../../resources/img/vision.png";
 import ErrorBoundary from "../../shared/errorBoundary/ErrorBoundary";
 import LoginButton from "../login/Login";
 import LogoutButton from "../logout/Logout";
+import { setIsAuthenticated } from "./App.slice";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Avatar } from "@mui/material";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 const App = () => {
+  const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useAuth0();
+
+  useEffect(() => {
+    dispatch(setIsAuthenticated(isAuthenticated));
+  }, [isAuthenticated, dispatch]);
 
   return (
     <div className="app">
-      <LoginButton />
-      <LogoutButton />
+      <div className="dashboard">
+        {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+        {isAuthenticated && (
+          <div className="user">
+            <Avatar src={user?.picture} />
+            {user?.name}
+          </div>
+        )}
+      </div>
       <ErrorBoundary>
         <AppHeader />
       </ErrorBoundary>

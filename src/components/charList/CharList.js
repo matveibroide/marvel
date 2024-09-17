@@ -13,6 +13,9 @@ const CharList = () => {
     (state) => state.charList
   );
 
+  const {isAuthenticated} = useSelector((state) => state.appSlice);
+
+
   // Load characters when component mounts
   useEffect(() => {
     dispatch(loadChars());
@@ -28,6 +31,14 @@ const CharList = () => {
   // Handle uploading more characters
   const handleUploadChars = () => {
     dispatch(uploadChars(offset));
+  };
+
+  const handleCharSelect = (item) => {
+    if (isAuthenticated) {
+      dispatch(selectChar(item));
+    } else {
+      alert("You must be loged in!");
+    }
   };
 
   const charsUploaded = chars.length > 9;
@@ -50,7 +61,7 @@ const CharList = () => {
             const { name, id, thumbnail } = item;
             return (
               <li
-                onClick={() => dispatch(selectChar(item))}
+                onClick={() => handleCharSelect(item)}
                 key={id}
                 className="char__item"
               >

@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Alert, Skeleton } from "@mui/material";
 import { Link } from "react-router-dom";
+import ComicsList from "../../shared/comicsList/ComicsList";
 
 const CharInfo = () => {
   const dispatch = useDispatch();
@@ -58,22 +59,7 @@ const CharInfo = () => {
             ))}
         </ul>
       ) : (
-        <ul className="char__comics-list">
-          {comics.length > 0 ? (
-            comics.map((item) => {
-              const { id, title } = item;
-              return (
-                <Link to={`/comicsinfo/${id}`}>
-                  <li key={id} className="char__comics-item">
-                    {title}
-                  </li>
-                </Link>
-              );
-            })
-          ) : (
-            <p>No comics was found</p>
-          )}
-        </ul>
+        <ComicsList comics={comics} />
       )}
     </div>
   );

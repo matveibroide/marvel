@@ -31,7 +31,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/comicsinfo/:id",
-    element: <ComicsInfo />,
+    element: (
+      <Provider store={store}>
+        <ErrorBoundary>
+          <ComicsInfo />
+        </ErrorBoundary>
+      </Provider>
+    ),
   },
 ]);
 
