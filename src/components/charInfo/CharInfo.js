@@ -1,6 +1,6 @@
 import "./charInfo.scss";
 import { useSelector } from "react-redux";
-import Description from "../../shared/description/Description";
+import Description from "../../shared/Description/Description";
 import { loadComics } from "../randomChar/RandomCharSlice";
 import { useEffect, memo, useMemo, useRef } from "react";
 import { useDispatch } from "react-redux";
