@@ -1,17 +1,18 @@
 import "./charInfo.scss";
 import { useSelector } from "react-redux";
-import Description from "../../shared/Description/Description";
+import Description from "../../shared/description/Description";
 import { loadComics } from "../randomChar/RandomCharSlice";
-import { useEffect } from "react";
+import { useEffect, memo, useMemo, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Alert, Skeleton } from "@mui/material";
-import { Link } from "react-router-dom";
 import ComicsList from "../../shared/comicsList/ComicsList";
 
 const CharInfo = () => {
   const dispatch = useDispatch();
 
-  console.log("render");
+  const render = useRef(0);
+  render.current += 1;
+  console.log(`CharInfo render:${render.current}`);
 
   const { name, description, thumbnail, id } = useSelector(
     (state) => state.randomChar.activeChar
@@ -24,6 +25,8 @@ const CharInfo = () => {
       dispatch(loadComics(id));
     }
   }, [id]);
+
+  const memoizedComics = useMemo(() => comics, [comics]);
 
   return (
     <div className="char__info">
@@ -59,7 +62,7 @@ const CharInfo = () => {
             ))}
         </ul>
       ) : (
-        <ComicsList comics={comics} />
+        <ComicsList comics={memoizedComics} />
       )}
     </div>
   );

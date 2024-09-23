@@ -1,7 +1,7 @@
 import "./randomChar.scss";
 import mjolnir from "../../resources/img/mjolnir.png";
 import { useSelector } from "react-redux";
-import Description from "../../shared/Description/Description";
+import Description from "../../shared/description/Description";
 
 const RandomChar = () => {
   const { name, description, thumbnail, comics } = useSelector(

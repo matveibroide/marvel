@@ -9,12 +9,16 @@ import LogoutButton from "../logout/Logout";
 import { setIsAuthenticated } from "./App.slice";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Avatar } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 
 const App = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useAuth0();
+
+  const render = useRef(0);
+  render.current += 1;
+  console.log(`App render:${render.current}`);
 
   useEffect(() => {
     dispatch(setIsAuthenticated(isAuthenticated));

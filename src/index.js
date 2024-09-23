@@ -6,9 +6,13 @@ import ErrorBoundary from "./shared/errorBoundary/ErrorBoundary";
 import { Auth0Provider } from "@auth0/auth0-react";
 import store from "./store/store";
 import { Provider } from "react-redux";
-import ComicsInfo from "./components/comicsInfo/ComicsInfo";
+import { lazy, Suspense } from "react";
+
+
 const container = document.getElementById("root");
 const root = createRoot(container);
+
+const LazyComicsInfo = lazy(() => import("./components/comicsInfo/ComicsInfo"));
 
 const router = createBrowserRouter([
   {
@@ -23,7 +27,7 @@ const router = createBrowserRouter([
       >
         <ErrorBoundary>
           <Provider store={store}>
-            <App />
+            <App/>
           </Provider>
         </ErrorBoundary>
       </Auth0Provider>
@@ -34,7 +38,9 @@ const router = createBrowserRouter([
     element: (
       <Provider store={store}>
         <ErrorBoundary>
-          <ComicsInfo />
+          <Suspense fallback={<div>Loading Comics Info...</div>}>
+            <LazyComicsInfo />
+          </Suspense>
         </ErrorBoundary>
       </Provider>
     ),

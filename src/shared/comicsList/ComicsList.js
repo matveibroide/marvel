@@ -3,10 +3,15 @@ import "./comicsList.scss";
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const ComicsList = ({ comics }) => {
   const [activeComicId, setActiveComicId] = useState(null);
+
+  const render = useRef(0);
+  render.current += 1;
+  console.log(`ComicsList render:${render.current}`);
+
   return (
     <ul className="char__comics-list">
       {comics.length > 0 ? (
