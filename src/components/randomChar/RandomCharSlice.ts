@@ -1,7 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import MarvelService from "../../services/MarvelService";
 
-const initialState = {
+interface Char {
+  id: number;
+  name: string;
+  description: string;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
+  [key: string]: any;
+}
+
+interface RandomCharState {
+  activeChar: Char;
+  loading: boolean;
+  error: null | Error;
+}
+
+const initialState: RandomCharState = {
   activeChar: {
     id: 1011175,
     name: "Aginar",
@@ -57,7 +74,6 @@ const initialState = {
   },
   loading: false,
   error: null,
-  comics: [],
 };
 
 export const loadComics = createAsyncThunk(
@@ -82,22 +98,6 @@ const randomCharSlice = createSlice({
         activeChar: action.payload,
       };
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(loadComics.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loadComics.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        state.comics = action.payload;
-      })
-      .addCase(loadComics.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
   },
 });
 

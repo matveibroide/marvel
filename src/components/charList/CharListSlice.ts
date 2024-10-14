@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import MarvelService from "../../services/MarvelService";
+import { ApiError } from "./CharList";
+import { Character } from "./CharList";
 
 // Thunk to handle loading characters
 export const loadChars = createAsyncThunk(
   "charList/loadChars",
-  async (offset = 9, { rejectWithValue }) => {
+  async (offset: number = 9, { rejectWithValue }) => {
     try {
       const response = await MarvelService.getAllCharacters(offset);
       return response.data.results;
@@ -17,7 +19,7 @@ export const loadChars = createAsyncThunk(
 // Thunk to handle uploading more characters
 export const uploadChars = createAsyncThunk(
   "charList/uploadChars",
-  async (offset = 9, { getState, rejectWithValue }) => {
+  async (offset: number = 9, { getState, rejectWithValue }) => {
     try {
       const response = await MarvelService.getAllCharacters(offset);
       return response.data.results;
@@ -27,7 +29,15 @@ export const uploadChars = createAsyncThunk(
   }
 );
 
-const initialState = {
+interface CharListState {
+  chars: Character[];
+  loading: boolean;
+  offset: number;
+  btnLoad: boolean;
+  error: ApiError | null;
+}
+
+const initialState: CharListState = {
   chars: [],
   loading: false,
   offset: 18,
@@ -56,7 +66,9 @@ const charListSlice = createSlice({
       })
       .addCase(loadChars.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        if (action.payload instanceof Error) {
+          state.error = action.payload;
+        }
       })
 
       // uploadChars case
@@ -70,8 +82,10 @@ const charListSlice = createSlice({
         state.btnLoad = false;
       })
       .addCase(uploadChars.rejected, (state, action) => {
-        state.btnLoad = false;
-        state.error = action.payload;
+        state.loading = false;
+        if (action.payload instanceof Error) {
+          state.error = action.payload;
+        }
       });
   },
 });

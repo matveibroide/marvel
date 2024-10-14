@@ -8,7 +8,7 @@ import LoginButton from "../login/Login";
 import LogoutButton from "../logout/Logout";
 import { setIsAuthenticated } from "./App.slice";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Avatar } from "@mui/material";
+import Profile from "../profile/Profile";
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 
@@ -28,12 +28,7 @@ const App = () => {
     <div className="app">
       <div className="dashboard">
         {isAuthenticated ? <LogoutButton /> : <LoginButton />}
-        {isAuthenticated && (
-          <div className="user">
-            <Avatar src={user?.picture} />
-            {user?.name}
-          </div>
-        )}
+        {isAuthenticated && <Profile />}
       </div>
       <ErrorBoundary>
         <AppHeader />

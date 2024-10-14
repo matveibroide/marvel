@@ -7,26 +7,44 @@ import { Skeleton } from "@mui/material";
 import { selectChar } from "../randomChar/RandomCharSlice";
 import { checkAuthentication } from "../../utils/authUtils";
 import { AlertComponent } from "../../shared/alert/Alert";
+import { RootState, AppDispatch } from "../../store/store";
+
+export interface Character {
+  id: number;
+  name: string;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
+  description: string;
+}
+
+export interface ApiError {
+  message: string;
+}
+
+const isApiError = (error: unknown): error is ApiError => {
+  return typeof error === "object" && error !== null && "message" in error;
+};
 
 const CharList = memo(() => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [isAlert, setIsAlert] = useState(false);
 
   const { chars, loading, offset, btnLoad, error } = useSelector(
-    (state) => state.charList
+    (state: RootState) => state.charList
   );
 
-  const { isAuthenticated } = useSelector((state) => state.appSlice);
+  const { isAuthenticated } = useSelector((state: RootState) => state.appSlice);
 
-  // Load characters when component mounts
   useEffect(() => {
-    dispatch(loadChars());
-  }, []);
+    dispatch(loadChars(9));
+  }, [dispatch]);
 
   const goToPageStart = useCallback(() => {
     document
       .querySelector(".randomchar__name")
-      .scrollIntoView({ behavior: "smooth" });
+      ?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
   const handleUploadChars = useCallback(() => {
@@ -34,7 +52,7 @@ const CharList = memo(() => {
   }, [dispatch, offset]);
 
   const handleCharSelect = useCallback(
-    (item) => {
+    (item: Character) => {
       const isAuth = checkAuthentication(isAuthenticated, () => {
         dispatch(selectChar(item));
       });
@@ -44,7 +62,7 @@ const CharList = memo(() => {
         }
       }
     },
-    [dispatch, isAuthenticated]
+    [dispatch, isAuthenticated, isAlert]
   );
 
   const charsUploaded = chars.length > 9;
@@ -60,9 +78,12 @@ const CharList = memo(() => {
           open={isAlert}
           onClose={handleCloseAlert}
           message="You have to be logged in!"
+          type="error"
         />
       )}
-      {error && <Alert severity="error">{error.message}</Alert>}
+      {error && isApiError(error) && (
+        <Alert severity="error">{error.message}</Alert>
+      )}
       {loading && (
         <Skeleton
           sx={{ bgcolor: "grey.200" }}
@@ -74,7 +95,8 @@ const CharList = memo(() => {
       )}
       {!loading && (
         <ul className="char__grid">
-          {chars.map((item) => {
+          {chars.map((item: Character) => {
+            // Typing item as Character
             const { name, id, thumbnail } = item;
             return (
               <li

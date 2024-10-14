@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./components/app/App";
+import App from "./components/app/App.tsx";
 import "./style/style.scss";
 import ErrorBoundary from "./shared/errorBoundary/ErrorBoundary";
 import { Auth0Provider } from "@auth0/auth0-react";

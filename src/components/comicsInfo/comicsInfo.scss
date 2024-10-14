@@ -13,6 +13,17 @@ $font-family: "Arial", sans-serif;
   font-family: $font-family;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
+  .comics-header {
+    margin-left: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .favorite-icon {
+      fill: rgb(243, 28, 28);
+    }
+  }
+
   h1 {
     text-align: center;
     color: $primary-color;

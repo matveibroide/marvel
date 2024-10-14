@@ -1,0 +1,36 @@
+.user-settings {
+  position: absolute;
+  z-index: 200;
+  margin-top: 10px;
+  background-color: #ffffff; /* Light background for the settings panel */
+  padding: 20px;
+  border-radius: 8px;
+  width: 200px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+
+  ul {
+    list-style-type: none; /* Remove bullet points from the list */
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 10px;
+      margin-bottom: 8px;
+      background-color: #fff; /* White background for list items */
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #e0e0e0; /* Lighter background on hover */
+        cursor: pointer;
+      }
+
+      a {
+        text-decoration: none;
+        color: #333; /* Dark text color */
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+}

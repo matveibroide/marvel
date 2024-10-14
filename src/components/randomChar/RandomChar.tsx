@@ -1,13 +1,25 @@
 import "./randomChar.scss";
 import mjolnir from "../../resources/img/mjolnir.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Description from "../../shared/Description/Description";
+import { selectChar } from "./RandomCharSlice";
+import { RootState } from "../../store/store";
+import { Character } from "../charList/CharList";
 
 const RandomChar = () => {
-  const { name, description, thumbnail, comics } = useSelector(
-    (state) => state.randomChar.activeChar
+  const dispatch = useDispatch();
+  const { name, description, thumbnail} = useSelector(
+    (state: RootState) => state.randomChar.activeChar
   );
+
+  const { chars } = useSelector((state: RootState) => state.charList);
+
   const { path, extension } = thumbnail;
+
+  const selectRandomChar = (chars : Character[] = []) => {
+    const randomChar = chars[Math.floor(Math.random() * chars.length)];
+    dispatch(selectChar(randomChar));
+  };
 
   return (
     <div className="randomchar">
@@ -37,7 +49,10 @@ const RandomChar = () => {
           Do you want to get to know him better?
         </p>
         <p className="randomchar__title">Or choose another one</p>
-        <button className="button button__main">
+        <button
+          onClick={() => selectRandomChar(chars)}
+          className="button button__main"
+        >
           <div className="inner">try it</div>
         </button>
         <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />

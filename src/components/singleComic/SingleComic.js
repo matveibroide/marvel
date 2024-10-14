@@ -18,3 +18,5 @@ const SingleComic = () => {
 }
 
 export default SingleComic;
+
+
