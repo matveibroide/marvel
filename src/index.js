@@ -7,7 +7,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import store from "./store/store";
 import { Provider } from "react-redux";
 import { lazy, Suspense } from "react";
-
+import FavoriteComics from "./components/favoriteComics/favoriteComics.tsx";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
       >
         <ErrorBoundary>
           <Provider store={store}>
-            <App/>
+            <App />
           </Provider>
         </ErrorBoundary>
       </Auth0Provider>
@@ -41,6 +41,16 @@ const router = createBrowserRouter([
           <Suspense fallback={<div>Loading Comics Info...</div>}>
             <LazyComicsInfo />
           </Suspense>
+        </ErrorBoundary>
+      </Provider>
+    ),
+  },
+  {
+    path: "/favorite-comics",
+    element: (
+      <Provider store={store}>
+        <ErrorBoundary>
+          <FavoriteComics />
         </ErrorBoundary>
       </Provider>
     ),

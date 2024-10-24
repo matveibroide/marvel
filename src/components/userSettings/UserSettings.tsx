@@ -12,7 +12,7 @@ const UserSettings = () => {
           e.stopPropagation();
         }}
       >
-        <Link to="">
+        <Link to="/favorite-comics">
           <li>Favorite Comics</li>
         </Link>
         <li>Photo</li>

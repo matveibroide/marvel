@@ -1,30 +1,45 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import MarvelService from "../../services/MarvelService";
-import { Skeleton } from "@mui/material";
+import { Skeleton, Snackbar, SnackbarContent } from "@mui/material";
 import ComicsList from "../../shared/comicsList/ComicsList";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { addToFavoirte } from "../profile/ProfileSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Alert } from "@mui/material";
-import { AlertComponent } from "../../shared/alert/Alert";
+
 import "./comicsInfo.scss";
+import { RootState } from "../../store/store";
 
 export interface Comic {
   title: string;
   description: string;
   images: { path: string; extension: string }[];
   id: number;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
 }
 
 const ComicsInfo = () => {
   const { id } = useParams();
   const [comicsItem, setComicsItem] = useState<Comic | null>(null);
-  const [isSelected, setIsSelected] = useState<boolean>(false);
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isAlert, setIsAlert] = useState(false);
+  const favoriteComics = useSelector(
+    (state: RootState) => state.profileSlice.favoriteComics
+  );
+  let isInFavorite = false;
+
+  if (id) {
+    isInFavorite = favoriteComics.find((item) => +item.id === +id)
+      ? true
+      : false;
+  }
 
   const dispatch = useDispatch();
 
@@ -41,26 +56,38 @@ const ComicsInfo = () => {
 
   const handleFavoriteIconClick = () => {
     dispatch(addToFavoirte(comicsItem));
-    setIsSelected(!isSelected);
     setIsAlert(true);
   };
 
   return (
     <div className="comics-info">
       {isAlert && (
-        <AlertComponent
-          type="success"
-          message= {isSelected ? 'Added to favorite' : 'Deleted from favorite'}
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
           open={isAlert}
+          message={isInFavorite ? "Added to favorite" : "Deleted from favorite"}
+          autoHideDuration={2000}
           onClose={() => setIsAlert(false)}
-        />
+        >
+          <SnackbarContent
+            message={
+              isInFavorite ? "Added to favorite" : "Deleted from from favorite"
+            }
+            sx={{
+              backgroundColor: `${isInFavorite ? "#50c053" : "#d91111"}`,
+              color: "white",
+            }} // Custom background
+          />
+        </Snackbar>
       )}
       <div className="comics-header">
         <h1>Comic Info</h1>{" "}
-        <FavoriteIcon
-          onClick={handleFavoriteIconClick}
-          className={isSelected ? "favorite-icon" : ""}
-        />
+        {!loading && (
+          <FavoriteIcon
+            onClick={handleFavoriteIconClick}
+            className={isInFavorite ? "favorite-icon" : ""}
+          />
+        )}
       </div>
       {loading && <Skeleton width={514} height={790} className="loading" />}
       {error && <Alert severity="error">'Something went wrong...'</Alert>}

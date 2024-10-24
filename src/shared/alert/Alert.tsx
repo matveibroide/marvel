@@ -49,7 +49,7 @@ export const AlertComponent = ({
       anchorOrigin={{ vertical: "top", horizontal: "left" }}
       open={open}
       autoHideDuration={5000}
-      onClose={handleSnackbarClose} // Use modified handler
+      onClose={handleSnackbarClose} 
     >
       <div style={{ width: "100%" }}>
         <Alert severity={type} onClose={handleSnackbarClose}>
