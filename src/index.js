@@ -8,7 +8,7 @@ import store from "./store/store";
 import { Provider } from "react-redux";
 
 import ComicsInfo from "./components/comicsInfo/ComicsInfo";
-import ComicsWrapper from "./components/comicsWrapper/ComicsWrapper.js";
+import ComicsWrapper from "./components/comicsWrapper/ComicsWrapper";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
