@@ -6,7 +6,7 @@ import ErrorBoundary from "./shared/errorBoundary/ErrorBoundary";
 import { Auth0Provider } from "@auth0/auth0-react";
 import store from "./store/store";
 import { Provider } from "react-redux";
-import FavoriteComics from "./components/favoriteComics/FavoriteComics.tsx";
+import FavoriteComics from "./components/favoriteComics/FavoriteComics";
 import ComicsInfo from "./components/comicsInfo/ComicsInfo";
 
 const container = document.getElementById("root");
