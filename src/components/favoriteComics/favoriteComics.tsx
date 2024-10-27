@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import s from './favoriteComics.module.scss'
+import s from "./favoriteComics.module.scss";
 import FavoriteComicsItem from "../favoriteComicsItem/FavoriteComicsItem";
 import { Comic } from "../comicsInfo/ComicsInfo";
 
@@ -17,7 +17,7 @@ const FavoriteComics = () => {
   return (
     <div>
       <ul className={s.container}>
-        {comics.map((comic:Comic) => {
+        {comics.map((comic: Comic) => {
           const {
             title,
             description,
