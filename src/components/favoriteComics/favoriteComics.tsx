@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import FavoriteComicsItem from "../favoriteComicsItem/favoriteComicsItem";
+import FavoriteComicsItem from "../favoriteComicsItem/FavoriteComicsItem";
+import s from "./favoriteComics.module.scss";
 
 const FavoriteComics = () => {
   const favoriteComics = useSelector(
@@ -12,9 +13,13 @@ const FavoriteComics = () => {
     return (
       <div>
         {favoriteComics.length === 0 && <h4>You didn't add any comics yet</h4>}
-        <ul>
+        {favoriteComics.length > 0 && (
+          <h1 className={s.header}>Favorite comics</h1>
+        )}
+        <ul className={s.favoriteComics}>
           {favoriteComics.map((item) => {
             const {
+              id,
               title,
               description,
               thumbnail: { path, extension },
@@ -25,6 +30,7 @@ const FavoriteComics = () => {
                 extension={extension}
                 title={title}
                 description={description}
+                id = {id}
               />
             );
           })}

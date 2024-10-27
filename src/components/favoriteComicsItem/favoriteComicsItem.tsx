@@ -1,10 +1,12 @@
-import React from "react";
+import { Link } from "react-router-dom";
+import s from "./favoriteComicsItem.module.scss";
 
 type FavoriteComicItemProps = {
   title: string;
   description: string;
   path: string;
   extension: string;
+  id: number;
 };
 
 const FavoriteComicsItem = ({
@@ -12,15 +14,18 @@ const FavoriteComicsItem = ({
   description,
   path,
   extension,
+  id,
 }: FavoriteComicItemProps) => {
   return (
-    <li>
-      <img src={`${path}.${extension}`} alt="" />
-      <h4>{title}</h4>
-      <p>
-        {description.length === 0 ? "No description was found" : description}
-      </p>
-    </li>
+    <Link to={`/comicsinfo/${id}`}>
+      <li className={s["favorite-comic-item"]}>
+        <img src={`${path}.${extension}`} alt={title} />
+        <h4>{title}</h4>
+        <p>
+          {description.length === 0 ? "No description was found" : description}
+        </p>
+      </li>
+    </Link>
   );
 };
 

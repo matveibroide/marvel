@@ -8,7 +8,15 @@ export const loadChars = createAsyncThunk(
   "charList/loadChars",
   async (offset: number = 9, { rejectWithValue }) => {
     try {
+      const cashedChars = localStorage.getItem("chars");
+      if (cashedChars) {
+        if (JSON.parse(cashedChars).length === offset) {
+          return JSON.parse(cashedChars);
+        }
+      }
+
       const response = await MarvelService.getAllCharacters(offset);
+      localStorage.setItem("chars", JSON.stringify(response.data.results));
       return response.data.results;
     } catch (error) {
       return rejectWithValue(error);

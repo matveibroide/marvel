@@ -6,55 +6,39 @@ import ErrorBoundary from "./shared/errorBoundary/ErrorBoundary";
 import { Auth0Provider } from "@auth0/auth0-react";
 import store from "./store/store";
 import { Provider } from "react-redux";
-import { lazy, Suspense } from "react";
-import FavoriteComics from "./components/favoriteComics/favoriteComics.tsx";
+import FavoriteComics from "./components/favoriteComics/FavoriteComics.tsx";
+import ComicsInfo from "./components/comicsInfo/ComicsInfo";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
 
-const LazyComicsInfo = lazy(() => import("./components/comicsInfo/ComicsInfo"));
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Auth0Provider
-        domain="dev-y1otq7mjob4dop3b.us.auth0.com"
-        clientId="oCJCTAGsyHqggiX3QSiN0WdPtVe7TLim"
-        authorizationParams={{
-          redirect_uri: window.location.origin,
-        }}
-      >
-        <ErrorBoundary>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </ErrorBoundary>
-      </Auth0Provider>
-    ),
+    element: <App />,
   },
   {
     path: "/comicsinfo/:id",
-    element: (
-      <Provider store={store}>
-        <ErrorBoundary>
-          <Suspense fallback={<div>Loading Comics Info...</div>}>
-            <LazyComicsInfo />
-          </Suspense>
-        </ErrorBoundary>
-      </Provider>
-    ),
+    element: <ComicsInfo />,
   },
   {
     path: "/favorite-comics",
-    element: (
-      <Provider store={store}>
-        <ErrorBoundary>
-          <FavoriteComics />
-        </ErrorBoundary>
-      </Provider>
-    ),
+    element: <FavoriteComics />,
   },
 ]);
 
-root.render(<RouterProvider router={router} />);
+root.render(
+  <Auth0Provider
+    domain="dev-y1otq7mjob4dop3b.us.auth0.com"
+    clientId="oCJCTAGsyHqggiX3QSiN0WdPtVe7TLim"
+    authorizationParams={{
+      redirect_uri: window.location.origin,
+    }}
+  >
+    <Provider store={store}>
+      <ErrorBoundary>
+        <RouterProvider router={router} />
+      </ErrorBoundary>
+    </Provider>
+  </Auth0Provider>
+);
