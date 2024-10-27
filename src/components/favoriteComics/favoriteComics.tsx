@@ -1,44 +1,44 @@
+import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import s from './favoriteComics.module.scss'
 import FavoriteComicsItem from "../favoriteComicsItem/FavoriteComicsItem";
-import s from "./favoriteComics.module.scss";
+import { Comic } from "../comicsInfo/ComicsInfo";
 
 const FavoriteComics = () => {
-  const favoriteComics = useSelector(
+  const comics = useSelector(
     (state: RootState) => state.profileSlice.favoriteComics
   );
 
-  if (favoriteComics) {
-    return (
-      <div>
-        {favoriteComics.length === 0 && <h4>You didn't add any comics yet</h4>}
-        {favoriteComics.length > 0 && (
-          <h1 className={s.header}>Favorite comics</h1>
-        )}
-        <ul className={s.favoriteComics}>
-          {favoriteComics.map((item) => {
-            const {
-              id,
-              title,
-              description,
-              thumbnail: { path, extension },
-            } = item;
-            return (
+  if (comics.length === 0) {
+    return <h1>No comics added yet</h1>;
+  }
+
+  return (
+    <div>
+      <ul className={s.container}>
+        {comics.map((comic:Comic) => {
+          const {
+            title,
+            description,
+            id,
+            thumbnail: { path, extension },
+          } = comic;
+          return (
+            <li key={id}>
               <FavoriteComicsItem
-                path={path}
-                extension={extension}
                 title={title}
                 description={description}
                 id={id}
+                path={path}
+                extension={extension}
               />
-            );
-          })}
-        </ul>
-      </div>
-    );
-  } else {
-    return <div>Loading</div>;
-  }
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 };
 
 export default FavoriteComics;
