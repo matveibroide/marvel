@@ -6,8 +6,9 @@ import ErrorBoundary from "./shared/errorBoundary/ErrorBoundary";
 import { Auth0Provider } from "@auth0/auth0-react";
 import store from "./store/store";
 import { Provider } from "react-redux";
-import FavoriteComics from "./components/favoriteComics/FavoriteComics";
+
 import ComicsInfo from "./components/comicsInfo/ComicsInfo";
+import ComicsWrapper from "./components/comicsWrapper/ComicsWrapper.js";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/favorite-comics",
-    element: <FavoriteComics />,
+    element: <ComicsWrapper />,
   },
 ]);
 
