@@ -4,7 +4,7 @@ import { Avatar } from "@mui/material";
 import UserSettings from "../userSettings/UserSettings";
 
 const Profile = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isLoading } = useAuth0();
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   if (isLoading) {
@@ -12,7 +12,7 @@ const Profile = () => {
   }
 
   const handleClick = () => {
-    
+
     setShowMenu(!showMenu);
   };
 

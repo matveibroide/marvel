@@ -1,5 +1,5 @@
 import "./charList.scss";
-import { useEffect, useRef, memo, useCallback, useState } from "react";
+import { useEffect, memo, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadChars, loadChars } from "./CharListSlice";
 import Alert from "@mui/material/Alert";
