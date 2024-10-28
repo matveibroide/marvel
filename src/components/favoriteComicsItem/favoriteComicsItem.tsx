@@ -9,7 +9,7 @@ type FavoriteComicItemProps = {
   id: number;
 };
 
-const FavoriteComicsItem = ({
+export const FavoriteComicsItem = ({
   title,
   description,
   path,
@@ -29,4 +29,4 @@ const FavoriteComicsItem = ({
   );
 };
 
-export default FavoriteComicsItem;
+

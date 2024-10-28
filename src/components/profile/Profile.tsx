@@ -12,6 +12,7 @@ const Profile = () => {
   }
 
   const handleClick = () => {
+    
     setShowMenu(!showMenu);
   };
 
