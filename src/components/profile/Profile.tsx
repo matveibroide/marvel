@@ -15,18 +15,15 @@ const Profile = () => {
     setShowMenu(!showMenu);
   };
 
-  return (
-    isAuthenticated &&
-    user && (
-      <>
-        <div className="user" onClick={handleClick}>
-          <Avatar src={user.picture} />
-          <p>{user.name}</p>
-          {showMenu && <UserSettings />}
-        </div>
-      </>
-    )
-  );
+  return user ? (
+    <>
+      <div className="user" onClick={handleClick}>
+        <Avatar src={user?.picture} />
+        <p>{user?.name}</p>
+        {showMenu && <UserSettings />}
+      </div>
+    </>
+  ) : null;
 };
 
 export default Profile;
